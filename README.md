@@ -56,3 +56,8 @@ Contributions are welcome! Feel free to open an issue or submit a pull request.
 ## Creator
 
 Am the creator of this project, mido
+
+## Screenshot of the App
+
+![image](https://github.com/midoch/philips-hue-connect/assets/101448145/d0b5523f-b6a5-458a-a332-cb7ccf37e550)
+
