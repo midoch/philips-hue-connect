@@ -23,7 +23,7 @@ The app is built with React, React Router, Axios, Tailwind CSS, and React Icons.
 
    ```bash
    cd philips-hue-react-app
-   npm install
+   npm run dev
    ```
 
 3. Start the development server:
@@ -55,4 +55,4 @@ Contributions are welcome! Feel free to open an issue or submit a pull request.
 
 ## Creator
 
-Am the creator of this project, [Mido]
+Am the creator of this project, mido
