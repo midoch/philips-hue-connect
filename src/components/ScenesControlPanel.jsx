@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as api from "../api"; // Import API functions
 import { HiOutlineLightBulb } from "react-icons/hi";
 
 const Scene = ({ icon, text, color, onClick, isSelected }) => (
@@ -19,34 +20,56 @@ const Scene = ({ icon, text, color, onClick, isSelected }) => (
 const ScenesControlPanel = () => {
   const [selectedScene, setSelectedScene] = useState(null);
 
+  useEffect(() => {
+    // Fetch the initial lamp state
+    fetchLampState();
+  }, []);
+
+  const fetchLampState = async () => {
+    try {
+      const lampId = 6; // Update with your lamp ID
+      const response = await api.fetchLampState(lampId);
+      setSelectedScene(findMatchingScene(response.data.xy));
+    } catch (error) {
+      console.error("Error fetching lamp state:", error);
+    }
+  };
+
+  const findMatchingScene = (xy) => {
+    return scenes.find(
+      (scene) =>
+        scene.icon.props.color[0] === xy[0] &&
+        scene.icon.props.color[1] === xy[1]
+    );
+  };
+
   const scenes = [
     {
-      icon: <HiOutlineLightBulb className="text-3xl" />,
+      icon: <HiOutlineLightBulb className="text-3xl" color={[0.675, 0.322]} />,
       text: "Birthday",
       color: "bg-[#FF9B9B]",
     },
     {
-      icon: <HiOutlineLightBulb className="text-3xl" />,
+      icon: <HiOutlineLightBulb className="text-3xl" color={[0.408, 0.517]} />,
       text: "Party",
       color: "bg-[#A693EB]",
     },
     {
-      icon: <HiOutlineLightBulb className="text-3xl" />,
+      icon: <HiOutlineLightBulb className="text-3xl" color={[0.443, 0.502]} />,
       text: "Relax",
       color: "bg-[#93CAEB]",
     },
     {
-      icon: <HiOutlineLightBulb className="text-3xl" />,
+      icon: <HiOutlineLightBulb className="text-3xl" color={[0.28, 0.15]} />,
       text: "Fun",
       color: "bg-[#89DD94]",
     },
   ];
 
-  const handleSceneClick = (scene) => {
+  const handleSceneClick = async (scene) => {
     setSelectedScene(scene);
 
-    const lightStateEndpoint =
-      "http://192.168.8.100/api/CaPeQqc2vC7aIo7VX5xfPKx1n6ZMv-BOmk4RV1VW/lights/6/state";
+    const lampId = 6; // Update with your lamp ID
 
     // Construct the payload for changing the light state
     const payload = {
@@ -54,15 +77,13 @@ const ScenesControlPanel = () => {
       xy: [scene.icon.props.color[0], scene.icon.props.color[1]],
     };
 
-    // Send a PUT request to update the light state
-    axios
-      .put(lightStateEndpoint, payload)
-      .then((response) => {
-        console.log("Color scene updated successfully:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error updating color scene:", error);
-      });
+    try {
+      // Send a PUT request to update the light state
+      await api.updateLampState(lampId, payload);
+      console.log("Color scene updated successfully");
+    } catch (error) {
+      console.error("Error updating color scene:", error);
+    }
   };
 
   return (

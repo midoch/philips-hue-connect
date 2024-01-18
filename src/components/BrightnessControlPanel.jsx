@@ -1,15 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as api from "../api"; // Import API functions
 
 const BrightnessControlPanel = () => {
   const [brightness, setBrightness] = useState(100); // Default brightness value
+  const [lampState, setLampState] = useState({}); // Lamp state
 
-  const handleBrightnessChange = (event) => {
+  useEffect(() => {
+    // Fetch the initial lamp state
+    fetchLampState();
+  }, []);
+
+  const fetchLampState = async () => {
+    try {
+      const lampId = 6; // Update with your lamp ID
+      const response = await api.fetchLampState(lampId);
+      setLampState(response.data);
+      setBrightness(response.data.bri);
+    } catch (error) {
+      console.error("Error fetching lamp state:", error);
+    }
+  };
+
+  const handleBrightnessChange = async (event) => {
     const newBrightness = parseInt(event.target.value, 10);
     setBrightness(newBrightness);
 
-    const lightStateEndpoint =
-      "http://192.168.8.100/api/CaPeQqc2vC7aIo7VX5xfPKx1n6ZMv-BOmk4RV1VW/lights/6/state";
+    const lampId = 6; // Update with your lamp ID
 
     // Construct the payload for changing the light state
     const payload = {
@@ -17,15 +34,13 @@ const BrightnessControlPanel = () => {
       bri: newBrightness,
     };
 
-    // Send a PUT request to update the light state
-    axios
-      .put(lightStateEndpoint, payload)
-      .then((response) => {
-        console.log("Brightness updated successfully:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error updating brightness:", error);
-      });
+    try {
+      // Send a PUT request to update the light state
+      await api.updateLampState(lampId, payload);
+      console.log("Brightness updated successfully");
+    } catch (error) {
+      console.error("Error updating brightness:", error);
+    }
   };
 
   return (

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import * as api from "../api"; // Import API functions
 
 const ColorControlPanel = () => {
   const [isOn, setIsOn] = useState(false);
@@ -14,29 +15,39 @@ const ColorControlPanel = () => {
     orange: [0.56, 0.404],
   };
 
-  const changeColor = (color) => {
-    const lightStateEndpoint =
-      "http://192.168.8.100/api/CaPeQqc2vC7aIo7VX5xfPKx1n6ZMv-BOmk4RV1VW/lights/6/state";
+  const changeColor = async (color) => {
+    const lampId = 6; // Update with your lamp ID
 
-    // Construct the payload for changing the light state
     const payload = {
       on: isOn,
       xy: colorCodes[color],
     };
 
-    // Send a PUT request to update the light state
-    axios
-      .put(lightStateEndpoint, payload)
-      .then((response) => {
-        console.log("Light state updated successfully:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error updating light state:", error);
-      });
+    try {
+      const currentLampState = await api.fetchLampState(lampId);
+      setIsOn(currentLampState.on);
+
+      await api.updateLampState(lampId, payload);
+      console.log("Light state updated successfully");
+    } catch (error) {
+      console.error("Error updating light state:", error);
+    }
   };
 
-  const handleToggle = () => {
-    setIsOn((prevIsOn) => !prevIsOn);
+  const handleToggle = async () => {
+    const lampId = 6; // Update with your lamp ID
+
+    const payload = {
+      on: !isOn,
+    };
+
+    try {
+      await api.updateLampState(lampId, payload);
+      setIsOn((prevIsOn) => !prevIsOn);
+      console.log("Light state updated successfully");
+    } catch (error) {
+      console.error("Error updating light state:", error);
+    }
   };
 
   return (
