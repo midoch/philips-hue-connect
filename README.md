@@ -1,7 +1,7 @@
-````markdown
 # Philips Hue Connect - React Control App
 
-This React app is a Mobile view that allows you to control Philips Hue lights through an intuitive user interface. It uses the [Philips Hue API](https://developers.meethue.com/develop/hue-api/) to communicate with the Hue Bridge and control the lights.
+This React app is a Mobile view that allows you to control Philips Hue lights through an intuitive user interface.
+It uses the [Philips Hue API](https://developers.meethue.com/develop/hue-api/) to communicate with the Hue Bridge and control the lights.
 
 The app is built with React, React Router, Axios, Tailwind CSS, and React Icons.
 
@@ -18,7 +18,6 @@ The app is built with React, React Router, Axios, Tailwind CSS, and React Icons.
    ```bash
    git clone https://github.com/midoch/philips-hue-react-app.git
    ```
-````
 
 2. Install dependencies:
 
