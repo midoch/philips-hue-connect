@@ -23,13 +23,13 @@ The app is built with React, React Router, Axios, Tailwind CSS, and React Icons.
 
    ```bash
    cd philips-hue-react-app
-   npm run dev
+   npm install
    ```
 
 3. Start the development server:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
