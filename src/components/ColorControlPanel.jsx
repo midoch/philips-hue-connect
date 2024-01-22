@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+// ColorControlPanel.jsx
+
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import * as api from "../api"; // Import API functions
+import * as api from "../api";
 
 const ColorControlPanel = () => {
   const [isOn, setIsOn] = useState(false);
+  const [currentColor, setCurrentColor] = useState("white"); // Default color
 
   // Define the Philips Hue color codes
   const colorCodes = {
@@ -15,19 +18,40 @@ const ColorControlPanel = () => {
     orange: [0.56, 0.404],
   };
 
-  const changeColor = async (color) => {
-    const lampId = 6; // Update with your lamp ID
+  const fetchCurrentColor = async () => {
+    const lampId = 55; // Update with your lamp ID
+    try {
+      const lampDetails = await api.fetchLampDetails(lampId);
+      setCurrentColor(getColorFromXY(lampDetails.state.xy));
+      setIsOn(lampDetails.state.on);
+    } catch (error) {
+      console.error("Error fetching lamp details:", error);
+    }
+  };
 
+  useEffect(() => {
+    fetchCurrentColor();
+  }, []);
+
+  const getColorFromXY = (xy) => {
+    // Implement logic to determine color based on xy values
+    // For simplicity, returning a default color "white"
+    return "white";
+  };
+
+  const changeColor = async (color) => {
+    const lampId = 55; // Update with your lamp ID
+
+    // Construct the payload for changing the light state
     const payload = {
       on: isOn,
       xy: colorCodes[color],
     };
 
     try {
-      const currentLampState = await api.fetchLampState(lampId);
-      setIsOn(currentLampState.on);
-
+      // Send a PUT request to update the light state
       await api.updateLampState(lampId, payload);
+      fetchCurrentColor(); // Update the current color after changing
       console.log("Light state updated successfully");
     } catch (error) {
       console.error("Error updating light state:", error);
@@ -35,15 +59,17 @@ const ColorControlPanel = () => {
   };
 
   const handleToggle = async () => {
-    const lampId = 6; // Update with your lamp ID
+    const lampId = 55; // Update with your lamp ID
 
+    // Construct the payload for changing the light state
     const payload = {
       on: !isOn,
     };
 
     try {
+      // Send a PUT request to update the light state
       await api.updateLampState(lampId, payload);
-      setIsOn((prevIsOn) => !prevIsOn);
+      fetchCurrentColor(); // Update the current color after changing
       console.log("Light state updated successfully");
     } catch (error) {
       console.error("Error updating light state:", error);
@@ -71,6 +97,7 @@ const ColorControlPanel = () => {
           {isOn ? "Off" : "On"}
         </button>
       </div>
+      <p className="mt-4">Current Color: {currentColor}</p>
     </div>
   );
 };
