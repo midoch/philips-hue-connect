@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import * as api from "../api"; // Import API functions
+import * as api from "../api";
 
 const BrightnessControlPanel = () => {
   const [brightness, setBrightness] = useState(100); // Default brightness value
@@ -13,7 +13,7 @@ const BrightnessControlPanel = () => {
 
   const fetchLampState = async () => {
     try {
-      const lampId = 6; // Update with your lamp ID
+      const lampId = 55; // Update with your lamp ID
       const response = await api.fetchLampState(lampId);
       setLampState(response.data);
       setBrightness(response.data.bri);
@@ -26,7 +26,7 @@ const BrightnessControlPanel = () => {
     const newBrightness = parseInt(event.target.value, 10);
     setBrightness(newBrightness);
 
-    const lampId = 6; // Update with your lamp ID
+    const lampId = 55; // Update with your lamp ID
 
     // Construct the payload for changing the light state
     const payload = {
