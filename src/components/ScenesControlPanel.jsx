@@ -27,7 +27,7 @@ const ScenesControlPanel = () => {
 
   const fetchLampState = async () => {
     try {
-      const lampId = 6; // Update with your lamp ID
+      const lampId = 55; // Update with your lamp ID
       const response = await api.fetchLampState(lampId);
       setSelectedScene(findMatchingScene(response.data.xy));
     } catch (error) {
@@ -69,7 +69,7 @@ const ScenesControlPanel = () => {
   const handleSceneClick = async (scene) => {
     setSelectedScene(scene);
 
-    const lampId = 6; // Update with your lamp ID
+    const lampId = 55; // Update with your lamp ID
 
     // Construct the payload for changing the light state
     const payload = {
