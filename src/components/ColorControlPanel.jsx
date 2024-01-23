@@ -91,13 +91,12 @@ const ColorControlPanel = () => {
         <button
           onClick={handleToggle}
           className={`ml-4 px-4 py-2 text-white ${
-            isOn ? "bg-green-500" : "bg-red-500"
+            isOn ? "bg-red-500" : "bg-green-500"
           } rounded cursor-pointer`}
         >
           {isOn ? "Off" : "On"}
         </button>
       </div>
-      <p className="mt-4">Current Color: {currentColor}</p>
     </div>
   );
 };
