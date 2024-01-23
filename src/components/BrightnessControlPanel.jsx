@@ -3,24 +3,11 @@ import axios from "axios";
 import * as api from "../api";
 
 const BrightnessControlPanel = () => {
-  const [brightness, setBrightness] = useState(100); // Default brightness value
-  const [lampState, setLampState] = useState({}); // Lamp state
+  // Retrieve the saved brightness from localStorage, default to 100 if not present
+  const savedBrightness =
+    parseInt(localStorage.getItem("brightness"), 10) || 100;
 
-  useEffect(() => {
-    // Fetch the initial lamp state
-    fetchLampState();
-  }, []);
-
-  const fetchLampState = async () => {
-    try {
-      const lampId = 55; // Update with your lamp ID
-      const response = await api.fetchLampState(lampId);
-      setLampState(response.data);
-      setBrightness(response.data.bri);
-    } catch (error) {
-      console.error("Error fetching lamp state:", error);
-    }
-  };
+  const [brightness, setBrightness] = useState(savedBrightness);
 
   const handleBrightnessChange = async (event) => {
     const newBrightness = parseInt(event.target.value, 10);
@@ -37,6 +24,10 @@ const BrightnessControlPanel = () => {
     try {
       // Send a PUT request to update the light state
       await api.updateLampState(lampId, payload);
+
+      // Save the new brightness level to localStorage
+      localStorage.setItem("brightness", newBrightness.toString());
+
       console.log("Brightness updated successfully");
     } catch (error) {
       console.error("Error updating brightness:", error);
