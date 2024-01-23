@@ -89,7 +89,7 @@ const ScenesControlPanel = () => {
   return (
     <div className="mt-4">
       <label className="block text-2xl font-medium text-white">Scenes</label>
-      <div className="grid grid-cols-2 gap-2 mt-2">
+      <div className="grid grid-cols-2 gap-6 mt-2">
         {scenes.map((scene, index) => (
           <Scene
             key={index}
