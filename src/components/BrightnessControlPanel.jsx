@@ -39,7 +39,7 @@ const BrightnessControlPanel = () => {
       <label className="block text-2xl font-medium text-white">
         Brightness
       </label>
-      <div className="mt-2">
+      <div className="mt-2 px-8">
         <input
           type="range"
           min="1"
