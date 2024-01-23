@@ -6,7 +6,6 @@ import BrightnessControlPanel from "../components/BrightnessControlPanel";
 import ScenesControlPanel from "../components/ScenesControlPanel";
 import RoomHeader from "../components/RoomHeader";
 import * as api from "../api"; // Import all API functions
-import LampStatus from "../components/LampStatus";
 
 const RoomDetailsPage = () => {
   const { roomName, lights } = useParams();
@@ -29,7 +28,6 @@ const RoomDetailsPage = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-r from-slate-800 to-slate-950 text-white text-sm sm:text-base">
       <main className="p-4">
         <RoomHeader roomName={roomName} lightColor={lampState.color} />
-        <LampStatus />
         <BrightnessControlPanel />
         <ColorControlPanel />
         <ScenesControlPanel />
